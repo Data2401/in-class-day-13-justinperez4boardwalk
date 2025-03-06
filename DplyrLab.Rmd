@@ -1,5 +1,6 @@
 ---
 title: "Intro to dplyr -  Lab"
+author: "Justin Perez"
 output: html_document
 ---
 ```{r}
@@ -15,7 +16,7 @@ Install the `"nycflights13"` package. Load (`library()`) the package.
 You'll also need to load `tidyverse` The data frame called `flights` should now be accessible to you.
 
 ```{r}
-# install.packages("nycflights13") # once per computer 
+#install.packages("nycflights13") # once per computer 
 library(nycflights13) # every time you use it
 library(tidyverse)
 
@@ -27,12 +28,19 @@ my_flights <- flights ## getting a copy of the data in the environment
 
 ```{r}
 
+glimpse(my_flights)
+#Rows: 336,776 / Columns: 19
+
+??flights
+
 ```
 
 
 2. Use `dplyr` to give the data frame a new column that is the amount of time gained or lost while flying (that is: how much of the delay arriving occurred during flight, as opposed to before departing).
 
 ```{r}
+
+my_flights <- my_flights %>% mutate(time_gained = dep_delay - arr_delay) 
 
 ```
 
@@ -48,6 +56,8 @@ my_flights <- flights ## getting a copy of the data in the environment
 
 ```{r}
 
+hist(my_flights)
+
 ```
 
 5. Make a histogram of the amount of time gained using the `hist()` function
@@ -61,6 +71,7 @@ my_flights <- flights ## getting a copy of the data in the environment
 
 ```{r}
 
+mean(my_flights$time_gained)
 
 ```
 
@@ -68,6 +79,9 @@ my_flights <- flights ## getting a copy of the data in the environment
 7. Create a data.frame of flights with a destination of Hobby Airport (Airport code 'HOU'), only including the origin, destination, and the "made_up_time" column you just created
 
 ```{r}
+
+hou_flights <- filter(my_flights, dest== "HOU") %>% select(origin, dest, time_gained)
+hou_flights
 
 ```
 
@@ -77,6 +91,8 @@ my_flights <- flights ## getting a copy of the data in the environment
 
 ```{r}
 
+hou_flights <- filter(my_flights, dest== "HOU") %>% select(origin, dest, time_gained)
+hou_flights
 
 ```
 
@@ -88,6 +104,9 @@ Go back to our flights exercise data. Consider flights from JFK to SEA. What was
 
 ```{r}
 
+target <- my_flights %>% filter(origin == "JFK" & dest == "SEA") %>% na.omit(cols=c(airt_itme, dep_time)) %>% summarize(avg_time=mean(air_time), min_time=min(air_time), max_time=max(air_time))
+target
+
 
 ```
 
@@ -95,6 +114,8 @@ Consider flights coming into Houston (HOU and IAH). What is the mean arrival del
 
 ```{r}
 
+target <- my_flights %>% filter(dest == "HOU" | dest == "IAH") %>% 
+  
 
 ```
 
